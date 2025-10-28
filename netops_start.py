@@ -9,7 +9,6 @@ import getpass
 # import win32com.client
 import msoffcrypto
 import io
-import pandas as pd
 from termcolor import colored
 
 from lib import comm
