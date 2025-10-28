@@ -1,0 +1,64 @@
+# .github/workflows/build-exe.yml
+
+name: Build Python EXE for Windows
+
+# 1. 触发器：这个 workflow 会在创建新的 "Release" 时运行
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-windows:
+    # 2. 运行环境：使用最新的 Windows 虚拟机
+    runs-on: windows-latest
+
+    steps:
+      # 3. 步骤 1: 检出代码
+      # 获取你的仓库代码到 Actions 运行器中
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      # 4. 步骤 2: 设置 Python 环境
+      # 安装 Python 3.9 (或你需要的版本)
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
+
+      # 5. 步骤 3: 安装依赖项
+      # 使用 pip 安装 requirements.txt 中定义的所有库
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 6. 步骤 4: 使用 PyInstaller 编译 EXE
+      # --onefile: 将所有东西打包成一个单独的 exe 文件
+      # --name: 指定输出的 exe 文件名
+      - name: Build executable with PyInstaller
+        run: pyinstaller --onefile --hidden-import nornir.core --hidden-import nornir.core.configuration --hidden-import nornir.plugins.inventory.dict_inventory --name aio_net_runner aio_net_runner.py
+
+      # 7. 步骤 5: 准备分发文件
+      # 创建一个名为 'dist-package' 的目录，并将需要分发的所有文件都放进去
+      # 这是最佳实践，确保用户下载的是一个完整的、可用的包
+      - name: Prepare distribution package
+        run: |
+          mkdir dist-package
+          copy dist\aio_net_runner.exe dist-package\
+          copy config.yaml dist-package\
+          copy commands.yaml dist-package\
+          xcopy inventory dist-package\inventory\ /E /I
+      
+      # 8. 步骤 6: 将分发包压缩成 ZIP 文件
+      - name: Archive distribution package as zip
+        run: |
+          cd dist-package
+          7z a -tzip aio_net_runner_windows.zip *
+      
+      # 9. 步骤 7: 上传 ZIP 文件作为 Release 的附件
+      # 这是最关键的一步，它会将最终的 zip 文件附加到你创建的 GitHub Release 中
+      - name: Upload Release Asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} ./dist-package/aio_net_runner_windows.zip --clobber
