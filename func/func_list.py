@@ -15,7 +15,7 @@ from progress.bar import Bar
 from prettytable import PrettyTable
 from termcolor import colored
 
-sys.path.append("")
+#sys.path.append("")
 from lib import comm
 
 # 定义一个没什么用的头
@@ -41,7 +41,7 @@ def export_conf():
                 unit="device(s)",
                 colour='green')
 
-    import export_conf
+    from func import export_conf
 
     task_desc = 'TASK: Export Configuration Of Device'
     results = nr.run(task=export_conf.export_conf,
@@ -69,7 +69,7 @@ def modify_conf():
                 unit="device(s)",
                 colour='green')
 
-    import modify_conf
+    from func import modify_conf
 
     task_desc = 'TASK: Modify Configuration Of Device'
     results = nr.run(task=modify_conf.modify_conf,
@@ -91,7 +91,7 @@ def modify_conf():
 @comm.result_write
 def filter_run():
 
-    import filter_nr
+    from func import filter_nr
 
     # 打印选项，输入对应数字，进行下一步，输入数字0返回上一级
     while True:
@@ -119,7 +119,7 @@ def filter_run():
                         unit="device(s)",
                         colour='green')
 
-            import export_conf
+            from func import export_conf
 
             task_desc = 'TASK: Export Configuration Of Device'
             results = nr.run(task=export_conf.export_conf,
@@ -142,7 +142,7 @@ def filter_run():
                         unit="device(s)",
                         colour='green')
 
-            import modify_conf
+            from func import modify_conf
 
             task_desc = 'TASK: Modify Configuration Of Device'
             results = nr.run(task=modify_conf.modify_conf,
@@ -165,7 +165,7 @@ def filter_run():
                         unit="device(s)",
                         colour='green')
 
-            import ssh_reliable
+            from func import ssh_reliable
 
             task_desc = 'TASK: SSH Reachability Detection'
             results = nr.run(task=ssh_reliable.ssh_test,
@@ -189,7 +189,7 @@ def filter_run():
                         unit="device(s)",
                         colour='green')
 
-            import icmp_reliable
+            from func import icmp_reliable
 
             task_desc = 'TASK: Ping Reachability Detection'
             results = nr.run(task=icmp_reliable.ping_test,
@@ -211,7 +211,7 @@ def filter_run():
                         unit="device(s)",
                         colour='green')
 
-            import save_conf
+            from func import save_conf
 
             task_desc = 'TASK:  Save Configuration'
             results = nr.run(task=save_conf.save_conf,
@@ -243,7 +243,7 @@ def get_port_mac():
                 unit="device(s)",
                 colour='green')
 
-    import get_port_mac
+    from func import get_port_mac
 
     task_desc = 'TASK: Get Port-MAC Table'
     results = nr.run(task=get_port_mac.get_port_mac,
@@ -312,7 +312,7 @@ def snmp_polling():
                 unit="device(s)",
                 colour='green')
 
-    import snmp_polling
+    from func import snmp_polling
 
     task_desc = 'TASK: Do SNMP Polling'
     results = nr.run(task=snmp_polling.task_polling,
@@ -351,7 +351,7 @@ def ssh_reliable():
                 unit="device(s)",
                 colour='green')
 
-    import ssh_reliable
+    from func import ssh_reliable
 
     task_desc = 'TASK: SSH Reachability Detection'
     results = nr.run(task=ssh_reliable.ssh_test,
@@ -378,7 +378,7 @@ def icmp_reliable():
                 unit="device(s)",
                 colour='green')
 
-    import icmp_reliable
+    from func import icmp_reliable
 
     task_desc = 'TASK: Ping Reachability Detection'
     results = nr.run(task=icmp_reliable.ping_test,
@@ -405,7 +405,7 @@ def save_conf():
                 unit="device(s)",
                 colour='green')
 
-    import save_conf
+    from func import save_conf
 
     task_desc = 'TASK: Save Configuration'
     results = nr.run(task=save_conf.save_conf,
@@ -475,7 +475,7 @@ def export_diagnostic_logfile():
                 unit="device(s)",
                 colour='green')
 
-    import export_diagnostic
+    from func import export_diagnostic
 
     task_desc = 'TASK: Export Diagnostic And Logfile'
     results = nr_new.run(task=export_diagnostic.export_info,
@@ -504,7 +504,7 @@ def check_diff():
                 unit="device(s)",
                 colour='green')
 
-    import check_diff
+    from func import check_diff
 
     task_desc = 'TASK: Check Diff'
     results = nr.run(task=check_diff.check_diff,
